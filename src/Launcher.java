@@ -102,7 +102,7 @@ class freq implements Command {
             return true;
         }
         catch(Exception e){
-            System.out.println(e.getClass().getSimpleName());
+            System.out.println("Unreadable file : " + e.getClass().getSimpleName());
             return false;
         }
     }
@@ -112,30 +112,29 @@ public class Launcher {
 
     public static void main(String[] args) throws IOException {
 
-        System.out.println("Bienvenue");
+        System.out.println("Welcome");
         List<Command> commandList = new LinkedList<Command>();
-        freq fr = new freq();
-        fibo fi = new fibo();
-        quit q = new quit();
-
-        commandList.add(fr);
-        commandList.add(fi);
-        commandList.add(q);
+        commandList.add(new freq());
+        commandList.add(new fibo());
+        commandList.add(new quit());
 
         boolean bool = false;
-        String str = null;
+        String str;
         do {
             System.out.println("Veuillez entrer une commande");
             Scanner sc = new Scanner(System.in);
+            int i = 0;
             str = sc.next();
-            for (Command command: commandList) {
-                if (command.name().compareTo(str) == 0)
-                {
-                    command.run(sc);
+            for (Command command : commandList) {
+                if (command.name().compareTo(str) == 0) {
+                    bool = command.run(sc);
+                    i = 1;
                     break;
                 }
             }
-            System.out.println("Unknown command");
+            if (!bool){
+                System.out.println("Unknown command");
+            }
 
         } while (bool == false);
 
